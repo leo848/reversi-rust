@@ -35,6 +35,27 @@ impl Board {
     pub fn flip(&mut self, field: Field) {
         self[field] = self[field].map(Color::other);
     }
+
+    pub fn add_piece(&mut self, field: Field, color: Color) {
+        self[field] = Some(color);
+    }
+
+    fn line_between(fields: (Field, Field)) -> Option<Vec<Field>> {
+        let (Field(x1, y1), Field(x2, y2)) = fields;
+        if x1 == x2 {
+            // Horizontal line
+            Some((y1..y2).map(|y| Field(x1, y)).collect())
+        } else if y1 == y2 {
+            // Vertical line
+            Some((x1..x2).map(|x| Field(x, y1)).collect())
+        } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
+            // Diagonal line
+            Some((x1..x2).zip(y1..y2).map(|(x, y)| Field(x, y)).collect())
+        } else {
+            // No line
+            None
+        }
+    }
 }
 
 impl Index<Field> for Board {

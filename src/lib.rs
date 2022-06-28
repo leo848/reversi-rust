@@ -40,6 +40,6 @@ mod tests {
 
         assert_eq!(board[Field(3, 3)], Some(Color::Black));
         assert_eq!(board[Field(3, 4)], Some(Color::Black));
-        assert_eq!(board[Field(5,5)], None);
+        assert_eq!(board[Field(5, 5)], None);
     }
 }
