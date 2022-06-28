@@ -9,9 +9,9 @@ mod tests {
     #[test]
     fn initialize_board() {
         let board = Board::new();
-        assert_eq!(board[3][3], Some(Color::White));
-        assert_eq!(board[3][4], Some(Color::Black));
-        assert_eq!(board[4][6], None);
+        assert_eq!(board[Field(3, 3)], Some(Color::White));
+        assert_eq!(board[Field(3, 4)], Some(Color::Black));
+        assert_eq!(board[Field(4, 6)], None);
     }
 
     #[test]
@@ -19,7 +19,7 @@ mod tests {
         let board = Board::empty();
         for x in 0..8 {
             for y in 0..8 {
-                assert_eq!(board[x][y], None);
+                assert_eq!(board[Field(x, y)], None);
             }
         }
     }
