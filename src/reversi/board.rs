@@ -33,10 +33,7 @@ impl Board {
     }
 
     pub fn flip(&mut self, field: Field) {
-        self[field] = match self[field] {
-            Some(color) => Some(color.other()),
-            None => None,
-        }
+        self[field] = self[field].map(Color::other);
     }
 }
 
