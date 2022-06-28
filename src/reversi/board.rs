@@ -31,6 +31,13 @@ impl Board {
     pub fn empty() -> Self {
         Board([[None; 8]; 8])
     }
+
+    pub fn flip(&mut self, field: Field) {
+        self[field] = match self[field] {
+            Some(color) => Some(color.other()),
+            None => None,
+        }
+    }
 }
 
 impl Index<Field> for Board {
