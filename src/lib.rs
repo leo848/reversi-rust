@@ -29,4 +29,15 @@ mod tests {
         let board = Board::new();
         println!("{}", board);
     }
+
+    #[test]
+    fn flip_board() {
+        let mut board = Board::new();
+
+        board.flip(Field(3, 3));
+        board.flip(Field(3, 4));
+
+        assert_eq!(board[Field(3, 3)], Some(Color::Black));
+        assert_eq!(board[Field(3, 4)], Some(Color::White));
+    }
 }
