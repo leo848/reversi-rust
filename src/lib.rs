@@ -42,4 +42,16 @@ mod tests {
         assert_eq!(board[Field(3, 4)], Some(Color::Black));
         assert_eq!(board[Field(5, 5)], None);
     }
+
+    #[test]
+    fn move_validity() {
+        let mut board = Board::new();
+        board[Field(2, 4)] = Some(Color::White);
+        
+        println!("{}", board);
+
+        let valid = board.move_validity(Field(3, 5), Color::White);
+
+        assert!(valid.unwrap().contains(&Field(3,4)));
+    }
 }
