@@ -138,7 +138,7 @@ impl Board {
             None
         }
         .and_then(|line: Vec<Field>| if line.len() < 3 { None } else { Some(line) })
-        .and_then(|line| Some(line[1..line.len() - 1].to_vec()))
+        .map(|line| line[1..line.len() - 1].to_vec())
     }
 }
 
