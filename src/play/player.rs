@@ -1,8 +1,10 @@
 use reversi::reversi::*;
 
 use std::{
-    io
+    io::{self, Write},
 };
+
+use colored::Colorize;
 
 pub trait Player {
     fn turn(&self, board: &Board) -> Field;
@@ -23,9 +25,9 @@ impl HumanPlayer {
 impl Player for HumanPlayer {
     fn turn(&self, board: &Board) -> Field {
         let mut input = String::new();
-        println!("{}'s turn:", self.name);
-        println!("{}", board);
-        println!("Enter a field:");
+        println!("{}", self.name.bold());
+        print!("Enter a field: ");
+        io::stdout().flush().unwrap();
         io::stdin().read_line(&mut input).unwrap();
 
         todo!()
