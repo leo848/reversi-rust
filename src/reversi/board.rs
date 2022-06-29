@@ -305,8 +305,7 @@ impl Board {
             for x in 0..self.len() {
                 write!(f, "│")?;
                 match self[Field(x, y)] {
-                    Some(Color::White) => write!(f, " ⚪ ")?,
-                    Some(Color::Black) => write!(f, " ⚫ ")?,
+                    Some(color) => write!(f, " {} ", color)?,
                     None => match valid_moves {
                         Some(ref moves) if moves.contains(&Field(x, y)) => {
                             write!(f, " {:2} ", Field(x, y).to_string())?

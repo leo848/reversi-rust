@@ -28,7 +28,7 @@ impl Player for HumanPlayer {
         }
 
         let mut input = String::new();
-        println!("{}", self.name.bold());
+        println!("{} {}", self.color().to_string(), self.name.bold());
         print!("Enter a field: ");
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut input).unwrap();
