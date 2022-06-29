@@ -5,6 +5,7 @@ pub use player::*;
 use reversi::reversi::*;
 
 use clap::ArgMatches;
+use colored::Colorize;
 
 pub enum Opponent {
     Human,
@@ -43,5 +44,10 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
         };
     }
 
-    println!("Checking for the winner...");
+    match board.status() {
+        GameStatus::Win(Color::White) => println!("{}, you {}", player_white.name(), "won!".green()),
+        GameStatus::Win(Color::Black) => println!("{}, you {}", player_black.name(), "won!".green()),
+        GameStatus::Draw => println!("{}", "Draw!".yellow()),
+        _ => unreachable!(),
+    }
 }
