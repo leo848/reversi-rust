@@ -7,6 +7,8 @@ use std::{
     ops::{Deref, DerefMut, Index, IndexMut, Not},
 };
 
+use colored::Colorize;
+
 /// A field consists of two coordinates from 0 to 7.
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub struct Field(pub usize, pub usize);
@@ -240,6 +242,34 @@ impl Board {
         .and_then(|line: Vec<Field>| if line.len() < 3 { None } else { Some(line) })
         .map(|line| line[1..line.len() - 1].to_vec())
     }
+
+    pub fn fmt_by_color(&self, f: &mut fmt::Formatter, color: Option<Color>) -> fmt::Result {
+        let valid_moves = color.map(|color| self.valid_moves(color));
+        writeln!(f, "╭──{}──╮", "──┬──".repeat(self.len() - 1))?;
+        for y in 0..self.len() {
+            if y != 0 {
+                writeln!(f, "├──{}──┤", "──┼──".repeat(self.len() - 1))?;
+            }
+            for x in 0..self.len() {
+                write!(f, "│")?;
+                match self[Field(x, y)] {
+                    Some(Color::White) => write!(f, " ⚪ ")?,
+                    Some(Color::Black) => write!(f, " ⚫ ")?,
+                    None => match valid_moves {
+                        Some(ref moves) if moves.contains(&Field(x, y)) => write!(f, " [] ")?,
+                        _ => write!(f, "    ")?,
+                    },
+                }
+                if x == self.len() - 1 {
+                    write!(f, "│")?;
+                }
+            }
+            writeln!(f)?;
+        }
+        writeln!(f, "╰──{}──╯", "──┴──".repeat(self.len() - 1))?;
+
+        Ok(())
+    }
 }
 
 impl Index<Field> for Board {
@@ -259,25 +289,11 @@ impl IndexMut<Field> for Board {
 impl fmt::Display for Board {
     /// Display the board in a human-readable format.
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        writeln!(f, "╭──{}──╮", "──┬──".repeat(self.len() - 1))?;
-        for y in 0..self.len() {
-            if y != 0 {
-                writeln!(f, "├──{}──┤", "──┼──".repeat(self.len() - 1))?;
-            }
-            for x in 0..self.len() {
-                write!(f, "│")?;
-                match self[Field(x, y)] {
-                    Some(Color::White) => write!(f, " ⚪ ")?,
-                    Some(Color::Black) => write!(f, " ⚫ ")?,
-                    None => write!(f, "    ")?,
-                }
-                if x == self.len() - 1 {
-                    write!(f, "│")?;
-                }
-            }
-            writeln!(f)?;
+        match f.fill() {
+            'w' => self.fmt_by_color(f, Some(Color::White))?,
+            'b' => self.fmt_by_color(f, Some(Color::Black))?,
+            _ => self.fmt_by_color(f, None)?,
         }
-        writeln!(f, "╰──{}──╯", "──┴──".repeat(self.len() - 1))?;
 
         Ok(())
     }

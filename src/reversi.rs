@@ -16,3 +16,12 @@ impl Color {
         }
     }
 }
+
+impl From<Color> for char {
+    fn from(color: Color) -> Self {
+        match color {
+            Color::Black => 'B',
+            Color::White => 'W',
+        }
+    }
+}
