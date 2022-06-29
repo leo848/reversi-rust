@@ -271,9 +271,7 @@ impl Board {
                     counter += 1;
                 }
             }
-            if counter != 1 {
-                panic!("Captured pieces are not unique");
-            }
+            assert!(counter == 1, "Captured pieces are not unique");
         }
 
         Ok(captured_pieces)
@@ -352,7 +350,7 @@ impl Board {
                     Some(color) => write!(f, " {} ", color)?,
                     None => match valid_moves {
                         Some(ref moves) if moves.contains(&Field(x, y)) => {
-                            write!(f, " {:2} ", Field(x, y).to_string())?
+                            write!(f, " {:2} ", Field(x, y).to_string())?;
                         }
                         _ => write!(f, "    ")?,
                     },

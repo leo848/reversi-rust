@@ -26,9 +26,9 @@ fn cli() -> Command<'static> {
 fn main() {
     let matches = cli().get_matches();
     if matches.is_present("player") {
-        play::run(play::Opponent::Human, &matches);
+        play::run(&play::Opponent::Human, &matches);
     } else if matches.is_present("bot") {
-        play::run(play::Opponent::Bot, &matches);
+        play::run(&play::Opponent::Bot, &matches);
     } else {
         eprintln!("Please specify either player or bot.");
     }

@@ -12,7 +12,7 @@ pub enum Opponent {
     Bot,
 }
 
-pub fn run(opponent: Opponent, _matches: &ArgMatches) {
+pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
     let mut board = Board::new();
 
     println!("{}", board);
@@ -46,10 +46,10 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
 
     match board.status() {
         GameStatus::Win(Color::White) => {
-            println!("{}, you {}", player_white.name(), "won!".green())
+            println!("{}, you {}", player_white.name(), "won!".green());
         }
         GameStatus::Win(Color::Black) => {
-            println!("{}, you {}", player_black.name(), "won!".green())
+            println!("{}, you {}", player_black.name(), "won!".green());
         }
         GameStatus::Draw => println!("{}", "Draw!".yellow()),
         _ => unreachable!(),
