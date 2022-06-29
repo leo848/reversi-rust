@@ -58,10 +58,12 @@ impl Board {
         new_board
     }
 
+    /// Returns a new empty board.
     pub fn empty() -> Self {
         Board([[None; 8]; 8])
     }
 
+    /// Flip a piece on the board.
     pub fn flip(&mut self, field: Field) {
         self[field] = self[field].map(Color::other);
     }
@@ -95,12 +97,17 @@ impl Board {
         Ok(captured_pieces)
     }
 
+    /// Return all valid moves a given color can make.
     pub fn valid_moves(&self, color: Color) -> Vec<Field> {
         Field::all()
             .filter(|&field| self.move_validity(field, color).is_ok())
             .collect()
     }
 
+    /// Add a piece to the board and execute all captures.
+    ///
+    /// # Returns
+    /// see `move_validity`
     pub fn add_piece(&mut self, field: Field, color: Color) -> Result<usize, PlaceError> {
         let captured_pieces = self.move_validity(field, color)?;
 
@@ -113,10 +120,15 @@ impl Board {
         Ok(captured_pieces.len())
     }
 
+    /// Set a field to a color.
     fn add_piece_unchecked(&mut self, field: Field, color: Color) {
         self[field] = Some(color);
     }
 
+    /// Calculate a line (horizontal, vertical or diagonal) between two fields.
+    ///
+    /// # Returns
+    /// A vector of fields that are part of the line, or None if no valid line exists.
     fn line_between(fields: (Field, Field)) -> Option<Vec<Field>> {
         let (Field(x1, y1), Field(x2, y2)) = fields;
 
