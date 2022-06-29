@@ -73,10 +73,7 @@ impl Field {
 impl ToString for Field {
     fn to_string(&self) -> String {
         assert!(self.in_bounds());
-        format!(
-            "{}",
-            ('a'..='h').nth(self.0).unwrap().to_string() + &(8 - self.1).to_string()
-        )
+        ('a'..='h').nth(self.0).unwrap().to_string() + &(8 - self.1).to_string()
     }
 }
 

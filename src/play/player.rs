@@ -23,7 +23,7 @@ impl HumanPlayer {
 
 impl Player for HumanPlayer {
     fn turn(&self, board: &Board) -> Option<Field> {
-        if board.valid_moves(self.color()).len() == 0 {
+        if board.valid_moves(self.color()).is_empty() {
             None?;
         }
 
@@ -33,7 +33,7 @@ impl Player for HumanPlayer {
         }
 
         let mut input = String::new();
-        println!("{} {}", self.color().to_string(), self.name.bold());
+        println!("{} {}", self.color(), self.name.bold());
         print!("Enter a field: ");
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut input).unwrap();
