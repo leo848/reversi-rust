@@ -111,6 +111,24 @@ impl Board {
             .count()
     }
 
+    /// Check whose turn it is.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::{Board, Field, Color};
+    /// let mut board = Board::new();
+    /// assert_eq!(board.turn(), Color::White);
+    /// board.add_piece(Field(2, 4), Color::White);
+    /// assert_eq!(board.turn(), Color::Black);
+    /// ```
+    pub fn turn(&self) -> Color {
+        match Field::all().filter(|&field| self[field].is_some()).count() % 2 {
+            0 => Color::White,
+            1 => Color::Black,
+            _ => unreachable!(),
+        }
+    }
+
     /// Check for the game status.
     ///
     /// # Examples
