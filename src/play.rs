@@ -8,5 +8,7 @@ pub enum Opponent {
 }
 
 pub fn run(opponent: Opponent, matches: &ArgMatches) {
-    todo!();
+    let board = Board::new();
+
+    println!("{}", board);
 } 
