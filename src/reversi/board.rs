@@ -12,11 +12,26 @@ pub struct Field(pub usize, pub usize);
 
 impl Field {
     /// Check if the field is in bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::Field;
+    /// assert!(Field(0, 3).in_bounds());
+    /// assert!(Field(7, 5).in_bounds());
+    /// assert!(!Field(3, 8).in_bounds());
+    /// ```
     pub fn in_bounds(&self) -> bool {
         self.0 < 8 && self.1 < 8
     }
 
     /// Return all possible fields that are in bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::Field;
+    /// let possible_fields = Field::all();
+    /// assert_eq!(possible_fields.count(), 64);
+    /// ```
     pub fn all() -> impl Iterator<Item = Field> {
         (0..8).flat_map(move |x| (0..8).map(move |y| Self(x, y)))
     }
