@@ -5,7 +5,7 @@ use std::io::{self, Write};
 use colored::Colorize;
 
 pub trait Player {
-    fn turn(&self, board: &Board) -> Field;
+    fn turn(&self, board: &Board) -> Option<Field>;
     fn color(&self) -> Color;
 }
 
@@ -21,7 +21,11 @@ impl HumanPlayer {
 }
 
 impl Player for HumanPlayer {
-    fn turn(&self, board: &Board) -> Field {
+    fn turn(&self, board: &Board) -> Option<Field> {
+        if board.valid_moves(self.color()).len() == 0 {
+            None?;
+        }
+
         match self.color {
             Color::White => println!("{:w>}", board),
             Color::Black => println!("{:b>}", board),
@@ -35,7 +39,7 @@ impl Player for HumanPlayer {
 
         let field = input.trim().parse().unwrap();
 
-        field
+        Some(field)
     }
 
     fn color(&self) -> Color {

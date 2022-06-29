@@ -31,11 +31,12 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
         };
         let field = player.turn(&board);
 
-        dbg!(field);
-
-        board
-            .add_piece(field, player.color())
-            .expect("Failed to add piece");
+        match field {
+            Some(field) => board
+                .add_piece(field, player.color())
+                .expect("Failed to add piece"),
+            None => continue,
+        };
     }
 
     println!("Checking for the winner...");

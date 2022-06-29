@@ -80,10 +80,7 @@ impl FromStr for Field {
         if chars.next().is_some() {
             Err(PlaceError::InvalidLength)
         } else {
-            Ok(Self(
-                ('a'..='h').position(|c| c == x).unwrap(),
-                8 - y,
-            ))
+            Ok(Self(('a'..='h').position(|c| c == x).unwrap(), 8 - y))
         }
     }
 }
