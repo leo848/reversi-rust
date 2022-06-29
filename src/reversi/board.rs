@@ -45,6 +45,29 @@ impl Field {
             .ok_or(PlaceError::OutOfBounds)
             .map(|&field| field)
     }
+
+    pub fn neighbors(&self) -> Vec<Self> {
+        let mut neighbors = Vec::new();
+
+        for delta_x in [-1_i8, 0, 1] {
+            for delta_y in [-1_i8, 0, 1] {
+                let (x, y) = (self.0 as i8 + delta_x, self.1 as i8 + delta_y);
+                let (x, y) = (x.try_into(), y.try_into());
+
+                let (x, y) = match (x, y) {
+                    (Ok(x), Ok(y)) => (x, y),
+                    _ => continue,
+                };
+
+                let neighbor = Field(x, y);
+                if neighbor.in_bounds() {
+                    neighbors.push(neighbor);
+                }
+            }
+        }
+
+        neighbors
+    }
 }
 
 impl ToString for Field {
@@ -221,6 +244,10 @@ impl Board {
             Err(PlaceError::Occupied)?;
         }
 
+        if field.neighbors().iter().all(|&field| self[field].is_none()) {
+            Err(PlaceError::CapturesNone)?;
+        }
+
         let captured_pieces: Vec<Field> = Field::all()
             .filter(|&other| self[other] == Some(color)) // needs to be the same color
             .filter_map(|other| Board::line_between((field, other))) // a line between the two
@@ -231,6 +258,18 @@ impl Board {
 
         if captured_pieces.is_empty() {
             Err(PlaceError::CapturesNone)?;
+        }
+
+        for piece in &captured_pieces {
+            let mut counter = 0;
+            for other_piece in &captured_pieces {
+                if other_piece == piece {
+                    counter += 1;
+                }
+            }
+            if counter != 1 {
+                panic!("Captured pieces are not unique");
+            }
         }
 
         Ok(captured_pieces)

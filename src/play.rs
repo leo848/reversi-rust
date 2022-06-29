@@ -41,7 +41,6 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
                 .expect("Failed to add piece"),
             None => continue,
         };
-
     }
 
     println!("Checking for the winner...");
