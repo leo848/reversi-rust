@@ -5,7 +5,10 @@ pub trait Player {
     fn color(&self) -> Color;
 }
 
+pub struct HumanPlayer {}
 
-pub struct HumanPlayer {
-
+impl HumanPlayer {
+    pub fn new() -> Self {
+        HumanPlayer {}
+    }
 }

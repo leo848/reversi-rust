@@ -123,7 +123,10 @@ impl Board {
         if Field::all().all(|field| self[field].is_none()) {
             GameStatus::InProgress
         } else {
-            match self.count_pieces(Color::White).cmp(&self.count_pieces(Color::Black)) {
+            match self
+                .count_pieces(Color::White)
+                .cmp(&self.count_pieces(Color::Black))
+            {
                 Less => GameStatus::Win(Color::Black),
                 Greater => GameStatus::Win(Color::White),
                 Equal => GameStatus::Draw,

@@ -1,6 +1,6 @@
 pub mod play;
 
-use clap::{ Arg, Command };
+use clap::{Arg, Command};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")
