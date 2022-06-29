@@ -98,7 +98,9 @@ impl Board {
     /// assert_eq!(board.count_pieces(Color::Black), 1);
     /// ```
     pub fn count_pieces(&self, color: Color) -> usize {
-        Field::all().filter(|&field| self[field] == Some(color)).count()
+        Field::all()
+            .filter(|&field| self[field] == Some(color))
+            .count()
     }
 
     /// Check if a given move is valid.
@@ -176,7 +178,12 @@ impl Board {
             Some(range_x().map(|x| Field(x, y1)).collect())
         } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
             // Diagonal line
-            Some((range_x()).zip(range_y()).map(|(x, y)| Field(x, y)).collect())
+            Some(
+                (range_x())
+                    .zip(range_y())
+                    .map(|(x, y)| Field(x, y))
+                    .collect(),
+            )
         } else {
             // No line
             None
