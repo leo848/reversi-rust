@@ -66,8 +66,12 @@ impl FromStr for Field {
     /// # Examples
     /// ```
     /// # use reversi::Field;
+    /// # use std::str::FromStr;
     /// let field = Field::from_str("a8").unwrap();
-    /// assert_eq!(field, Field(0, 7));
+    /// assert_eq!(field, Field(0, 0));
+    ///
+    /// let field2 = Field::from_str("h1").unwrap();
+    /// assert_eq!(field2, Field(7, 7));
     /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut chars = s.chars();
@@ -141,7 +145,7 @@ impl Board {
     }
 
     /// Flip a piece on the board.
-    pub fn flip(&mut self, field: Field) {
+    fn flip(&mut self, field: Field) {
         self[field] = self[field].map(Color::other);
     }
 
@@ -184,7 +188,7 @@ impl Board {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::{Board, Field, Color};
+    /// # use reversi::{Board, Field, Color, GameStatus};
     /// let mut board = Board::new();
     /// assert_eq!(board.status(), GameStatus::InProgress);
     /// ```

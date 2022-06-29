@@ -31,19 +31,6 @@ mod tests {
     }
 
     #[test]
-    fn flip_board() {
-        let mut board = Board::new();
-
-        board.flip(Field(3, 3));
-        board.flip(Field(4, 4));
-        board.flip(Field(5, 5));
-
-        assert_eq!(board[Field(3, 3)], Some(Color::Black));
-        assert_eq!(board[Field(3, 4)], Some(Color::Black));
-        assert_eq!(board[Field(5, 5)], None);
-    }
-
-    #[test]
     fn move_validity() {
         let mut board = Board::new();
         board[Field(2, 4)] = Some(Color::White);
