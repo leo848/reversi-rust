@@ -27,8 +27,8 @@ impl Player for HumanPlayer {
         println!("{}", board);
         println!("Enter a field:");
         io::stdin().read_line(&mut input).unwrap();
-        let field = Field::from_str(&input.trim()).unwrap();
-        field
+
+        todo!()
     }
 
     fn color(&self) -> Color {
