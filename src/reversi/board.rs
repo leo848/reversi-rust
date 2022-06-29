@@ -4,7 +4,7 @@ use std::{
     cmp::Ordering::*,
     error::Error,
     fmt,
-    ops::{Deref, DerefMut, Index, IndexMut},
+    ops::{Deref, DerefMut, Index, IndexMut, Not},
 };
 
 /// A field consists of two coordinates from 0 to 7.
@@ -138,7 +138,7 @@ impl Board {
     /// assert_eq!(board.status(), GameStatus::InProgress);
     /// ```
     pub fn status(&self) -> GameStatus {
-        if Field::all().all(|field| self[field].is_none()) {
+        if Field::all().all(|field| self[field].is_some()).not() {
             GameStatus::InProgress
         } else {
             match self

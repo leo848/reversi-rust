@@ -24,12 +24,15 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
 
     while board.status() == board::GameStatus::InProgress {
         clearscreen::clear().expect("Failed to clear screen");
+        println!("{}", board);
+
         let player = if board.turn() == Color::White {
             &player_white
         } else {
             &player_black
         };
         let field = player.turn(&board);
-        println!("{}", board);
     }
+
+    println!("Checking for the winner...");
 }
