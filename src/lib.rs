@@ -47,11 +47,19 @@ mod tests {
     fn move_validity() {
         let mut board = Board::new();
         board[Field(2, 4)] = Some(Color::White);
-        
+
         println!("{}", board);
 
         let valid = board.move_validity(Field(3, 5), Color::White);
+        assert!(valid.unwrap().contains(&Field(3, 4)));
+    }
 
-        assert!(valid.unwrap().contains(&Field(3,4)));
+    #[test]
+    fn valid_moves() {
+        let board = Board::new();
+        assert_eq!(
+            board.valid_moves(Color::White),
+            vec![Field(2, 4), Field(3, 5), Field(4, 2), Field(5, 3)]
+        );
     }
 }

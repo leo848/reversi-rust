@@ -80,17 +80,10 @@ impl Board {
             Err(PlaceError::Occupied)?;
         }
 
-        for v in Field::all()
-            .filter(|&other| self[other] == Some(color))
-            // .filter_map(|other| Board::line_between((field, other)))
-        {
-        }
-        dbg!(Board::line_between((Field(3,5), Field(3,3))));
-
         let captured_pieces: Vec<Field> = Field::all()
             .filter(|&other| self[other] == Some(color)) // needs to be the same color
             .filter_map(|other| Board::line_between((field, other))) // a line between the two
-                                                                     // fields has to exist
+            // fields has to exist
             .filter(|line| line.iter().all(|&field| self[field] == Some(color.other())))
             .flatten()
             .collect();
@@ -134,13 +127,18 @@ impl Board {
             Some((x1.min(x2)..=x2.max(x1)).map(|x| Field(x, y1)).collect())
         } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
             // Diagonal line
-            Some((x1.min(x2)..=x2.max(x1)).zip(y1.min(y2)..=y2.max(y1)).map(|(x, y)| Field(x, y)).collect())
+            Some(
+                (x1.min(x2)..=x2.max(x1))
+                    .zip(y1.min(y2)..=y2.max(y1))
+                    .map(|(x, y)| Field(x, y))
+                    .collect(),
+            )
         } else {
             // No line
             None
         }
         .and_then(|line: Vec<Field>| if line.len() < 3 { None } else { Some(line) })
-        .and_then(|line| Some(line[1..line.len()-1].to_vec()))
+        .and_then(|line| Some(line[1..line.len() - 1].to_vec()))
     }
 }
 
