@@ -6,14 +6,17 @@ use std::{
     ops::{Deref, DerefMut, Index, IndexMut},
 };
 
+/// A field consists of two coordinates from 0 to 7.
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub struct Field(pub usize, pub usize);
 
 impl Field {
+    /// Check if the field is in bounds.
     pub fn in_bounds(&self) -> bool {
         self.0 < 8 && self.1 < 8
     }
 
+    /// Return all possible fields that are in bounds.
     pub fn all() -> impl Iterator<Item = Field> {
         (0..8).flat_map(move |x| (0..8).map(move |y| Self(x, y)))
     }
