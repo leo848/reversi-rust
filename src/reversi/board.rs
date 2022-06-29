@@ -220,7 +220,7 @@ impl fmt::Display for Board {
                 match self[Field(x, y)] {
                     Some(Color::White) => write!(f, " ⚪ ")?,
                     Some(Color::Black) => write!(f, " ⚫ ")?,
-                    None => write!(f, " {x} {y}")?,
+                    None => write!(f, "    ")?,
                 }
                 if x == self.len() - 1 {
                     write!(f, "│")?;
