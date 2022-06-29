@@ -86,6 +86,21 @@ impl Board {
         self[field] = self[field].map(Color::other);
     }
 
+    /// Count the amount of pieces of a given color.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::{Board, Field, Color};
+    /// let mut board = Board::new();
+    ///
+    /// assert_eq!(board.count_pieces(Color::Black), 2);
+    /// board.add_piece(Field(2, 4), Color::White);
+    /// assert_eq!(board.count_pieces(Color::Black), 1);
+    /// ```
+    pub fn count_pieces(&self, color: Color) -> usize {
+        Field::all().filter(|&field| self[field] == Some(color)).count()
+    }
+
     /// Check if a given move is valid.
     ///
     /// # Returns
