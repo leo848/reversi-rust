@@ -119,20 +119,19 @@ impl Board {
 
     fn line_between(fields: (Field, Field)) -> Option<Vec<Field>> {
         let (Field(x1, y1), Field(x2, y2)) = fields;
+
+        let range_x = || x1.min(x2)..=x2.max(x1);
+        let range_y = || y1.min(y2)..=y2.max(y1);
+
         if x1 == x2 {
             // Vertical line
-            Some((y1.min(y2)..=y2.max(y1)).map(|y| Field(x1, y)).collect())
+            Some(range_y().map(|y| Field(x1, y)).collect())
         } else if y1 == y2 {
             // Horizontal line
-            Some((x1.min(x2)..=x2.max(x1)).map(|x| Field(x, y1)).collect())
+            Some(range_x().map(|x| Field(x, y1)).collect())
         } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
             // Diagonal line
-            Some(
-                (x1.min(x2)..=x2.max(x1))
-                    .zip(y1.min(y2)..=y2.max(y1))
-                    .map(|(x, y)| Field(x, y))
-                    .collect(),
-            )
+            Some((range_x()).zip(range_y()).map(|(x, y)| Field(x, y)).collect())
         } else {
             // No line
             None
