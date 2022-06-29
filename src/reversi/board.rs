@@ -1,6 +1,7 @@
 use crate::reversi::*;
 
 use std::{
+    cmp::Ordering::*,
     error::Error,
     fmt,
     ops::{Deref, DerefMut, Index, IndexMut},
@@ -57,6 +58,13 @@ impl fmt::Display for PlaceError {
 impl Error for PlaceError {}
 
 #[derive(Debug, Eq, PartialEq, Clone)]
+pub enum GameStatus {
+    InProgress,
+    Win(Color),
+    Draw,
+}
+
+#[derive(Debug, Eq, PartialEq, Clone)]
 pub struct Board(pub [[Option<Color>; 8]; 8]);
 
 impl Board {
@@ -101,6 +109,26 @@ impl Board {
         Field::all()
             .filter(|&field| self[field] == Some(color))
             .count()
+    }
+
+    /// Check for the game status.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::{Board, Field, Color};
+    /// let mut board = Board::new();
+    /// assert_eq!(board.status(), GameStatus::InProgress);
+    /// ```
+    pub fn status(&self) -> GameStatus {
+        if Field::all().all(|field| self[field].is_none()) {
+            GameStatus::InProgress
+        } else {
+            match self.count_pieces(Color::White).cmp(&self.count_pieces(Color::Black)) {
+                Less => GameStatus::Win(Color::Black),
+                Greater => GameStatus::Win(Color::White),
+                Equal => GameStatus::Draw,
+            }
+        }
     }
 
     /// Check if a given move is valid.

@@ -1,5 +1,11 @@
 use reversi::reversi::*;
 
-trait Player {
+pub trait Player {
     fn turn(&self, board: &Board) -> Field;
+    fn color(&self) -> Color;
+}
+
+
+pub struct HumanPlayer {
+
 }
