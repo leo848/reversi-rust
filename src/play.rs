@@ -12,7 +12,7 @@ pub enum Opponent {
 }
 
 pub fn run(opponent: Opponent, _matches: &ArgMatches) {
-    let board = Board::new();
+    let mut board = Board::new();
 
     println!("{}", board);
 
@@ -30,6 +30,8 @@ pub fn run(opponent: Opponent, _matches: &ArgMatches) {
             &player_black
         };
         let field = player.turn(&board);
+
+        board.add_piece(field, player.color()).expect("Failed to add piece");
     }
 
     println!("Checking for the winner...");

@@ -7,9 +7,6 @@ use std::{
     ops::{Deref, DerefMut, Index, IndexMut, Not},
 };
 
-use colored::Colorize;
-
-/// A field consists of two coordinates from 0 to 7.
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub struct Field(pub usize, pub usize);
 
