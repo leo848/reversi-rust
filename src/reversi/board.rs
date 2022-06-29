@@ -256,7 +256,11 @@ impl Board {
                     Some(Color::White) => write!(f, " ⚪ ")?,
                     Some(Color::Black) => write!(f, " ⚫ ")?,
                     None => match valid_moves {
-                        Some(ref moves) if moves.contains(&Field(x, y)) => write!(f, " [] ")?,
+                        Some(ref moves) if moves.contains(&Field(x, y)) => write!(
+                            f,
+                            " {:0>2} ",
+                            moves.iter().position(|&m| m == Field(x, y)).unwrap()
+                        )?,
                         _ => write!(f, "    ")?,
                     },
                 }

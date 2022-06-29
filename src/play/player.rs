@@ -1,8 +1,6 @@
 use reversi::reversi::*;
 
-use std::{
-    io::{self, Write},
-};
+use std::io::{self, Write};
 
 use colored::Colorize;
 
