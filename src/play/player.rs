@@ -33,7 +33,9 @@ impl Player for HumanPlayer {
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut input).unwrap();
 
-        todo!()
+        let field = input.trim().parse().unwrap();
+
+        field
     }
 
     fn color(&self) -> Color {

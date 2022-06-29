@@ -5,6 +5,7 @@ use std::{
     error::Error,
     fmt,
     ops::{Deref, DerefMut, Index, IndexMut, Not},
+    str::FromStr,
 };
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
@@ -35,10 +36,62 @@ impl Field {
     pub fn all() -> impl Iterator<Item = Field> {
         (0..8).flat_map(move |x| (0..8).map(move |y| Self(x, y)))
     }
+
+    pub fn from_board_move(input: &str, board: &Board) -> Result<Self, PlaceError> {
+        let index = input.parse::<usize>().or(Err(PlaceError::InvalidNumber))?;
+        board
+            .valid_moves(Color::White)
+            .get(index)
+            .ok_or(PlaceError::OutOfBounds)
+            .map(|&field| field)
+    }
+}
+
+impl ToString for Field {
+    fn to_string(&self) -> String {
+        assert!(self.in_bounds());
+        format!(
+            "{}",
+            ('a'..='h').nth(self.0).unwrap().to_string() + &(8 - self.1).to_string()
+        )
+    }
+}
+
+impl FromStr for Field {
+    type Err = PlaceError;
+
+    /// Parse a field from a string.
+    /// The string must be in the format `a8` or `h1`.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::Field;
+    /// let field = Field::from_str("a8").unwrap();
+    /// assert_eq!(field, Field(0, 7));
+    /// ```
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut chars = s.chars();
+        let x = chars.next().ok_or(PlaceError::InvalidLength)?;
+        let y = chars
+            .next()
+            .ok_or(PlaceError::InvalidLength)
+            .map(|c| c.to_digit(10).ok_or(PlaceError::InvalidNumber))?;
+        let y: usize = y?.try_into().unwrap();
+        if chars.next().is_some() {
+            Err(PlaceError::InvalidLength)
+        } else {
+            Ok(Self(
+                ('a'..='h').position(|c| c == x).unwrap(),
+                8 - y,
+            ))
+        }
+    }
 }
 
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub enum PlaceError {
+    InvalidLength,
+    InvalidNumber,
     Occupied,
     OutOfBounds,
     CapturesNone,
@@ -47,6 +100,8 @@ pub enum PlaceError {
 impl fmt::Display for PlaceError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            PlaceError::InvalidLength => write!(f, "Invalid length"),
+            PlaceError::InvalidNumber => write!(f, "Invalid number"),
             PlaceError::Occupied => write!(f, "Field is already occupied"),
             PlaceError::OutOfBounds => write!(f, "Field is out of bounds"),
             PlaceError::CapturesNone => write!(f, "Field captures no pieces"),
@@ -253,11 +308,9 @@ impl Board {
                     Some(Color::White) => write!(f, " ⚪ ")?,
                     Some(Color::Black) => write!(f, " ⚫ ")?,
                     None => match valid_moves {
-                        Some(ref moves) if moves.contains(&Field(x, y)) => write!(
-                            f,
-                            " {:0>2} ",
-                            moves.iter().position(|&m| m == Field(x, y)).unwrap()
-                        )?,
+                        Some(ref moves) if moves.contains(&Field(x, y)) => {
+                            write!(f, " {:2} ", Field(x, y).to_string())?
+                        }
                         _ => write!(f, "    ")?,
                     },
                 }
