@@ -1,3 +1,5 @@
+pub mod player;
+
 use reversi::reversi::*;
 
 use clap::ArgMatches;
