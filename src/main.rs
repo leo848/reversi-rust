@@ -1,3 +1,5 @@
+pub mod play;
+
 use clap::{ Arg, Command };
 
 fn cli() -> Command<'static> {
@@ -24,10 +26,10 @@ fn cli() -> Command<'static> {
 fn main() {
     let matches = cli().get_matches();
     if matches.is_present("player") {
-        println!("Reversi against a player");
+        play::run(play::Opponent::Human, &matches);
     } else if matches.is_present("bot") {
-        println!("Reversi against a bot");
+        play::run(play::Opponent::Bot, &matches);
     } else {
-        println!("Do you want to play against a player or a bot?");
+        eprintln!("Please specify either player or bot.");
     }
 }
