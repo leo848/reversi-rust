@@ -217,7 +217,14 @@ impl Board {
     /// ```
     pub fn status(&self) -> GameStatus {
         if Field::all().all(|field| self[field].is_some()).not() {
-            GameStatus::InProgress
+            match (
+                self.count_pieces(Color::White),
+                self.count_pieces(Color::Black),
+            ) {
+                (0, _) => GameStatus::Win(Color::Black),
+                (_, 0) => GameStatus::Win(Color::White),
+                _ => GameStatus::InProgress,
+            }
         } else {
             match self
                 .count_pieces(Color::White)
