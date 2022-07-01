@@ -24,6 +24,8 @@ impl HumanPlayer {
 impl Player for HumanPlayer {
     fn turn(&self, board: &Board) -> Option<Field> {
         if board.valid_moves(self.color()).is_empty() {
+            println!("You have no valid moves. Press <Enter> to pass.");
+            io::stdin().read_line(&mut String::new()).unwrap();
             None?;
         }
 

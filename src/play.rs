@@ -44,12 +44,15 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
         };
     }
 
+    println!("{}: {} pieces", player_white.color(), board.count_pieces(Color::White));
+    println!("{}: {} pieces", player_black.color(), board.count_pieces(Color::Black));
+
     match board.status() {
         GameStatus::Win(Color::White) => {
-            println!("{}, you {}", player_white.name(), "won!".green());
+            println!("\n{}, {}!", player_white.name(), "you won".bold().green());
         }
         GameStatus::Win(Color::Black) => {
-            println!("{}, you {}", player_black.name(), "won!".green());
+            println!("\n{}, {}!", player_black.name(), "you won".bold().green());
         }
         GameStatus::Draw => println!("{}", "Draw!".yellow()),
         _ => unreachable!(),
