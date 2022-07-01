@@ -100,7 +100,7 @@ impl FromStr for Field {
             .next()
             .ok_or(PlaceError::InvalidLength)
             .map(|c| c.to_digit(10).ok_or(PlaceError::InvalidNumber))?;
-        let y: usize = y?.try_into().unwrap();
+        let y: usize = y?.try_into().map_err(|_| PlaceError::InvalidNumber)?;
         if chars.next().is_some() {
             Err(PlaceError::InvalidLength)
         } else {
