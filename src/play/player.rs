@@ -36,7 +36,6 @@ impl Player for HumanPlayer {
             None?;
         }
 
-
         let field = loop {
             let mut input = String::new();
             print!("Enter a field: ");

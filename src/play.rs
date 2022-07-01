@@ -44,8 +44,23 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
         };
     }
 
-    println!("{}: {} pieces", player_white.color(), board.count_pieces(Color::White));
-    println!("{}: {} pieces", player_black.color(), board.count_pieces(Color::Black));
+    clearscreen::clear().expect("Failed to clear screen");
+
+    board.sort();
+    println!("{}\n\n", board);
+
+    println!("{}", "Final results".bold());
+
+    println!(
+        "\n{}: {} pieces",
+        player_white.color(),
+        board.count_pieces(Color::White)
+    );
+    println!(
+        "{}: {} pieces",
+        player_black.color(),
+        board.count_pieces(Color::Black)
+    );
 
     match board.status() {
         GameStatus::Win(Color::White) => {

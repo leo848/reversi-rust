@@ -33,7 +33,7 @@ impl Field {
     /// let possible_fields = Field::all();
     /// assert_eq!(possible_fields.count(), 64);
     /// ```
-    pub fn all() -> impl Iterator<Item = Field> {
+    pub fn all() -> impl DoubleEndedIterator<Item = Field> {
         (0..8).flat_map(move |x| (0..8).map(move |y| Self(x, y)))
     }
 
@@ -374,6 +374,29 @@ impl Board {
         writeln!(f, "╰──{}──╯", "──┴──".repeat(self.len() - 1))?;
 
         Ok(())
+    }
+
+    /// Sorts the board for displaying purposes.
+    pub fn sort(&mut self) {
+        let (white_count, black_count) = (
+            self.count_pieces(Color::White),
+            self.count_pieces(Color::Black),
+        );
+        let none_count = self.len() * self.len() - white_count - black_count;
+
+        for (index, field) in Field::all()
+            .map(|field| Field(field.1, field.0))
+            .rev()
+            .enumerate()
+        {
+            if index < white_count {
+                self[field] = Some(Color::White);
+            } else if index < white_count + none_count {
+                self[field] = None;
+            } else {
+                self[field] = Some(Color::Black);
+            }
+        }
     }
 }
 
