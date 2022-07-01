@@ -32,13 +32,28 @@ impl Player for HumanPlayer {
             Color::Black => println!("{:b>}", board),
         }
 
-        let mut input = String::new();
         println!("{} {}", self.color(), self.name.bold());
-        print!("Enter a field: ");
-        io::stdout().flush().unwrap();
-        io::stdin().read_line(&mut input).unwrap();
 
-        let field = input.trim().parse().unwrap();
+        let field = loop {
+            let mut input = String::new();
+            print!("Enter a field: ");
+            io::stdout().flush().unwrap();
+            io::stdin().read_line(&mut input).unwrap();
+
+            match input.trim().parse() {
+                Ok(field) => match board.move_validity(field, self.color()) {
+                    Ok(_) => break field,
+                    Err(error) => {
+                        println!("Invalid move: {}", error);
+                        continue;
+                    }
+                },
+                Err(error) => {
+                    println!("Invalid input: {}", error);
+                    continue;
+                }
+            };
+        };
 
         Some(field)
     }

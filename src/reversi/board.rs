@@ -104,7 +104,7 @@ impl FromStr for Field {
         if chars.next().is_some() {
             Err(PlaceError::InvalidLength)
         } else {
-            Ok(Self(('a'..='h').position(|c| c == x).unwrap(), 8 - y))
+            Ok(Self(('a'..='h').position(|c| c == x).ok_or(PlaceError::OutOfBounds)?, usize::checked_sub(8, y).ok_or(PlaceError::OutOfBounds)?))
         }
     }
 }
@@ -275,6 +275,11 @@ impl Board {
         }
 
         Ok(captured_pieces)
+    }
+
+    /// Check if a given move is valid.
+    pub fn is_valid(&self, field: Field, color: Color) -> bool {
+        self.move_validity(field, color).is_ok()
     }
 
     /// Return all valid moves a given color can make.
