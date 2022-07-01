@@ -23,18 +23,19 @@ impl HumanPlayer {
 
 impl Player for HumanPlayer {
     fn turn(&self, board: &Board) -> Option<Field> {
-        if board.valid_moves(self.color()).is_empty() {
-            println!("You have no valid moves. Press <Enter> to pass.");
-            io::stdin().read_line(&mut String::new()).unwrap();
-            None?;
-        }
-
         match self.color {
             Color::White => println!("{:w>}", board),
             Color::Black => println!("{:b>}", board),
         }
 
         println!("{} {}", self.color(), self.name.bold());
+
+        if board.valid_moves(self.color()).is_empty() {
+            println!("You have no valid moves. Press <Enter> to pass.");
+            io::stdin().read_line(&mut String::new()).unwrap();
+            None?;
+        }
+
 
         let field = loop {
             let mut input = String::new();
