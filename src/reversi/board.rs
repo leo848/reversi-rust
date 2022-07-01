@@ -104,7 +104,12 @@ impl FromStr for Field {
         if chars.next().is_some() {
             Err(PlaceError::InvalidLength)
         } else {
-            Ok(Self(('a'..='h').position(|c| c == x).ok_or(PlaceError::OutOfBounds)?, usize::checked_sub(8, y).ok_or(PlaceError::OutOfBounds)?))
+            Ok(Self(
+                ('a'..='h')
+                    .position(|c| c == x)
+                    .ok_or(PlaceError::OutOfBounds)?,
+                usize::checked_sub(8, y).ok_or(PlaceError::OutOfBounds)?,
+            ))
         }
     }
 }

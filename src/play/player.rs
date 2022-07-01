@@ -44,7 +44,7 @@ impl Player for HumanPlayer {
                 Ok(field) => match board.move_validity(field, self.color()) {
                     Ok(_) => break field,
                     Err(error) => {
-                        println!("Invalid move: {}", error);
+                        println!("Invalid move: {:?} {}", field, error);
                         continue;
                     }
                 },
