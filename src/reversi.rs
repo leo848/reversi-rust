@@ -31,8 +31,8 @@ impl From<Color> for char {
 impl fmt::Display for Color {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         match self {
-            Color::Black => write!(f, "⚪"),
-            Color::White => write!(f, "⚫"),
+            Color::White => write!(f, "⚪"),
+            Color::Black => write!(f, "⚫"),
         }
     }
 }

@@ -12,7 +12,7 @@ pub enum Opponent {
     Bot,
 }
 
-pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
+pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     let mut board = Board::new();
 
     println!("{}", board);
@@ -21,7 +21,10 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
         Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
     let player_black: Box<dyn Player> = match opponent {
         Opponent::Human => Box::new(HumanPlayer::new(Color::Black, "Player 2".to_string())),
-        Opponent::Bot => Box::new(MinimaxBot::new(Color::Black, 3)),
+        Opponent::Bot => Box::new(MinimaxBot::new(
+            Color::Black,
+            *matches.get_one::<u8>("depth").unwrap(),
+        )),
     };
 
     let mut counter = 0;

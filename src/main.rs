@@ -1,6 +1,6 @@
 pub mod play;
 
-use clap::{Arg, Command};
+use clap::{value_parser, Arg, Command};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")
@@ -20,6 +20,15 @@ fn cli() -> Command<'static> {
                 .short('b')
                 .long("bot")
                 .conflicts_with("player"),
+        )
+        .arg(
+            Arg::new("depth")
+                .help("The depth of the bot's search")
+                .short('d')
+                .long("depth")
+                .takes_value(true)
+                .default_value("3")
+                .value_parser(value_parser!(u8).range(0..=8)),
         )
 }
 

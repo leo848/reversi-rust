@@ -3,7 +3,7 @@ use reversi::reversi::*;
 
 use std::{
     io::{self, Write},
-    ops::Sub
+    ops::Sub,
 };
 
 use colored::Colorize;
@@ -109,7 +109,7 @@ impl MinimaxBot {
 
 impl Player for MinimaxBot {
     fn name(&self) -> String {
-        format!("Minimax Bot (depth {})", self.depth)
+        format!("Minimax Bot (depth {}, {:?})", self.depth, MinimaxStrategy::from(self.color()))
     }
 
     fn color(&self) -> Color {
@@ -122,19 +122,23 @@ impl Player for MinimaxBot {
         println!("{} {}\n", self.color(), self.name().bold());
 
         let mut sp = Spinner::new(Spinners::Aesthetic, "Thinking".into());
-        let best_move = self.minimax(board, 3, self.color.into()).0;
+        let best_move = self.minimax(board, 3, self.color.into());
         sp.stop();
-        
-        if let Some(field) = best_move {
-            println!("\x1b[2K\x1b[0GThe bot plays {}", field.to_string());
+
+        if let Some(field) = best_move.0 {
+            println!(
+                "\x1b[2K\rThe bot plays {} ({:+})",
+                field.to_string(),
+                best_move.1
+            );
         } else {
-            println!("The bot has no valid moves. It passes.");
+            println!("\x1b[2K\rThe bot has no valid moves. It passes.");
         }
 
         print!("Press enter to continue...");
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut String::new()).unwrap();
 
-        best_move
+        best_move.0
     }
 }

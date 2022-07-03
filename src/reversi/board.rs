@@ -218,7 +218,10 @@ impl Board {
     /// assert_eq!(board.status(), GameStatus::InProgress);
     /// ```
     pub fn status(&self) -> GameStatus {
-        if Field::all().all(|field| self[field].is_some()).not() {
+        if Field::all().all(|field| self[field].is_some()).not()
+            || (self.valid_moves(Color::White).is_empty()
+                && self.valid_moves(Color::Black).is_empty())
+        {
             match (
                 self.count_pieces(Color::White),
                 self.count_pieces(Color::Black),
