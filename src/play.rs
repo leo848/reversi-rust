@@ -64,10 +64,10 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
 
     match board.status() {
         GameStatus::Win(Color::White) => {
-            println!("\n{}, {}!", player_white.name(), "you won".bold().green());
+            println!("\n{}, {}", player_white.name(), "you won!".bold().green());
         }
         GameStatus::Win(Color::Black) => {
-            println!("\n{}, {}!", player_black.name(), "you won".bold().green());
+            println!("\n{}, {}", player_black.name(), "you won!".bold().green());
         }
         GameStatus::Draw => println!("{}", "Draw!".yellow()),
         _ => unreachable!(),
