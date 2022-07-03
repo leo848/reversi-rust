@@ -17,10 +17,10 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
 
     println!("{}", board);
 
-    let player_white = HumanPlayer::new(Color::White, "Player 1".to_string());
-    let player_black = match opponent {
-        Opponent::Human => HumanPlayer::new(Color::Black, "Player 2".to_string()),
-        Opponent::Bot => todo!(),
+    let player_white: Box<dyn Player> = Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
+    let player_black: Box<dyn Player> = match opponent {
+        Opponent::Human => Box::new(HumanPlayer::new(Color::Black, "Player 2".to_string())),
+        Opponent::Bot => Box::new(MinimaxBot::new(Color::Black, 3)),
     };
 
     let mut counter = 0;
