@@ -122,7 +122,7 @@ impl Player for MinimaxBot {
         println!("{} {}\n", self.color(), self.name().bold());
 
         let mut sp = Spinner::new(Spinners::Aesthetic, "Thinking".into());
-        let best_move = self.minimax(board, 3, self.color.into());
+        let best_move = self.minimax(board, self.depth, self.color.into());
         sp.stop();
 
         if let Some(field) = best_move.0 {
