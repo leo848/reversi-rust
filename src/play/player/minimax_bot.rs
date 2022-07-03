@@ -2,8 +2,52 @@ use super::Player;
 use reversi::reversi::*;
 
 use std::{
+    io::{self, Write},
     ops::Sub
 };
+
+use colored::Colorize;
+use spinners::{Spinner, Spinners};
+
+#[derive(Debug, Clone, Copy)]
+enum MinimaxStrategy {
+    Minimize,
+    Maximize,
+}
+
+impl MinimaxStrategy {
+    fn other(&self) -> MinimaxStrategy {
+        match self {
+            MinimaxStrategy::Minimize => MinimaxStrategy::Maximize,
+            MinimaxStrategy::Maximize => MinimaxStrategy::Minimize,
+        }
+    }
+
+    fn value(&self) -> i32 {
+        match self {
+            MinimaxStrategy::Minimize => i32::MAX,
+            MinimaxStrategy::Maximize => i32::MIN,
+        }
+    }
+}
+
+impl From<Color> for MinimaxStrategy {
+    fn from(color: Color) -> Self {
+        match color {
+            Color::White => MinimaxStrategy::Maximize,
+            Color::Black => MinimaxStrategy::Minimize,
+        }
+    }
+}
+
+impl From<MinimaxStrategy> for Color {
+    fn from(strategy: MinimaxStrategy) -> Self {
+        match strategy {
+            MinimaxStrategy::Minimize => Color::Black,
+            MinimaxStrategy::Maximize => Color::White,
+        }
+    }
+}
 
 pub struct MinimaxBot {
     color: Color,
@@ -32,13 +76,34 @@ impl MinimaxBot {
         }
     }
 
-    fn minimax(&self, board: &Board, depth: u8, maximize: bool) -> (Option<Field>, i32) {
+    fn minimax(&self, board: &Board, depth: u8, strategy: MinimaxStrategy) -> (Option<Field>, i32) {
         if depth == 0 || board.status() != GameStatus::InProgress {
             return (None, self.eval(board));
         }
 
-        let mut best_choice = (None, i32::MIN);
+        let mut best_choice = (None, strategy.value());
 
+        for field in board.valid_moves(strategy.into()) {
+            let mut board = board.clone();
+            board.add_piece(field, strategy.into()).unwrap();
+
+            let (_, evaluation) = self.minimax(&board, depth - 1, strategy.other());
+
+            match strategy {
+                MinimaxStrategy::Minimize => {
+                    if evaluation < best_choice.1 {
+                        best_choice = (Some(field), evaluation);
+                    }
+                }
+                MinimaxStrategy::Maximize => {
+                    if evaluation > best_choice.1 {
+                        best_choice = (Some(field), evaluation);
+                    }
+                }
+            }
+        }
+
+        best_choice
     }
 }
 
@@ -52,6 +117,24 @@ impl Player for MinimaxBot {
     }
 
     fn turn(&self, board: &Board) -> Option<Field> {
-        None
+        println!("{}", board);
+
+        println!("{} {}\n", self.color(), self.name().bold());
+
+        let mut sp = Spinner::new(Spinners::Aesthetic, "Thinking".into());
+        let best_move = self.minimax(board, 3, self.color.into()).0;
+        sp.stop();
+        
+        if let Some(field) = best_move {
+            println!("\x1b[2K\x1b[0GThe bot plays {}", field.to_string());
+        } else {
+            println!("The bot has no valid moves. It passes.");
+        }
+
+        print!("Press enter to continue...");
+        io::stdout().flush().unwrap();
+        io::stdin().read_line(&mut String::new()).unwrap();
+
+        best_move
     }
 }

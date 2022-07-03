@@ -17,7 +17,8 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
 
     println!("{}", board);
 
-    let player_white: Box<dyn Player> = Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
+    let player_white: Box<dyn Player> =
+        Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
     let player_black: Box<dyn Player> = match opponent {
         Opponent::Human => Box::new(HumanPlayer::new(Color::Black, "Player 2".to_string())),
         Opponent::Bot => Box::new(MinimaxBot::new(Color::Black, 3)),
@@ -39,7 +40,9 @@ pub fn run(opponent: &Opponent, _matches: &ArgMatches) {
         match field {
             Some(field) => board
                 .add_piece(field, player.color())
-                .expect("Failed to add piece"),
+                .unwrap_or_else(|err| {
+                    panic!("Failed to add piece `{}`: {}", field.to_string(), err);
+                }),
             None => continue,
         };
     }

@@ -11,4 +11,3 @@ pub trait Player {
     fn color(&self) -> Color;
     fn name(&self) -> String;
 }
-

@@ -1,9 +1,7 @@
 use super::Player;
 use reversi::reversi::*;
 
-use std::{
-    io::{self, Write},
-};
+use std::io::{self, Write};
 
 use colored::Colorize;
 
@@ -65,4 +63,3 @@ impl Player for HumanPlayer {
         Some(field)
     }
 }
-
