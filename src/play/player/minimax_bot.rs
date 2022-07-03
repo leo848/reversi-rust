@@ -1,4 +1,9 @@
 use super::Player;
+use reversi::reversi::*;
+
+use std::{
+    ops::Sub
+};
 
 pub struct MinimaxBot {
     color: Color,
