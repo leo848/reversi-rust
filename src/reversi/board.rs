@@ -345,7 +345,7 @@ impl Board {
             // Horizontal line
             Some(range_x().map(|x| Field(x, y1)).collect())
         } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
-            if x1 > x2 && y1 > y2 {
+            if (x1 > x2 && y1 > y2) || (x1 < x2 && y1 < y2) {
                 // Diagonal line: \
                 Some(
                     (range_x())
