@@ -23,7 +23,7 @@ fn cli() -> Command<'static> {
         )
         .arg(
             Arg::new("depth")
-                .help("The depth of the bot's search")
+                .help("The depth of the bot's search (implies --bot)")
                 .short('d')
                 .long("depth")
                 .takes_value(true)
@@ -36,7 +36,7 @@ fn main() {
     let matches = cli().get_matches();
     if matches.is_present("player") {
         play::run(&play::Opponent::Human, &matches);
-    } else if matches.is_present("bot") {
+    } else if matches.is_present("bot") || matches.is_present("depth") {
         play::run(&play::Opponent::Bot, &matches);
     } else {
         eprintln!("Please specify either player or bot.");
