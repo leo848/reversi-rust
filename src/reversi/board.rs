@@ -209,6 +209,18 @@ impl Board {
         }
     }
 
+    /// Return the game status, assuming the game is done.
+    fn final_status(&self) -> GameStatus {
+        match self
+            .count_pieces(Color::White)
+            .cmp(&self.count_pieces(Color::Black))
+        {
+            Less => GameStatus::Win(Color::Black),
+            Greater => GameStatus::Win(Color::White),
+            Equal => GameStatus::Draw,
+        }
+    }
+
     /// Check for the game status.
     ///
     /// # Examples
@@ -218,27 +230,25 @@ impl Board {
     /// assert_eq!(board.status(), GameStatus::InProgress);
     /// ```
     pub fn status(&self) -> GameStatus {
-        if Field::all().all(|field| self[field].is_some()).not()
-            || (self.valid_moves(Color::White).is_empty()
-                && self.valid_moves(Color::Black).is_empty())
-        {
+        if Field::all().all(|field| self[field].is_some()).not() {
             match (
                 self.count_pieces(Color::White),
                 self.count_pieces(Color::Black),
             ) {
                 (0, _) => GameStatus::Win(Color::Black),
                 (_, 0) => GameStatus::Win(Color::White),
-                _ => GameStatus::InProgress,
+                _ => {
+                    if self.valid_moves(Color::White).is_empty()
+                        && self.valid_moves(Color::Black).is_empty()
+                    {
+                        self.final_status()
+                    } else {
+                        GameStatus::InProgress
+                    }
+                }
             }
         } else {
-            match self
-                .count_pieces(Color::White)
-                .cmp(&self.count_pieces(Color::Black))
-            {
-                Less => GameStatus::Win(Color::Black),
-                Greater => GameStatus::Win(Color::White),
-                Equal => GameStatus::Draw,
-            }
+            self.final_status()
         }
     }
 
@@ -335,13 +345,23 @@ impl Board {
             // Horizontal line
             Some(range_x().map(|x| Field(x, y1)).collect())
         } else if usize::abs_diff(x1, x2) == usize::abs_diff(y1, y2) {
-            // Diagonal line
-            Some(
-                (range_x())
-                    .zip(range_y())
-                    .map(|(x, y)| Field(x, y))
-                    .collect(),
-            )
+            if x1 > x2 && y1 > y2 {
+                // Diagonal line: \
+                Some(
+                    (range_x())
+                        .zip(range_y())
+                        .map(|(x, y)| Field(x, y))
+                        .collect(),
+                )
+            } else {
+                // Diagonal line: /
+                Some(
+                    (range_x())
+                        .zip(range_y().rev())
+                        .map(|(x, y)| Field(x, y))
+                        .collect(),
+                )
+            }
         } else {
             // No line
             None

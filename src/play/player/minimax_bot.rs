@@ -109,7 +109,11 @@ impl MinimaxBot {
 
 impl Player for MinimaxBot {
     fn name(&self) -> String {
-        format!("Minimax Bot (depth {}, {:?})", self.depth, MinimaxStrategy::from(self.color()))
+        format!(
+            "Minimax Bot (depth {}, {:?})",
+            self.depth,
+            MinimaxStrategy::from(self.color())
+        )
     }
 
     fn color(&self) -> Color {
@@ -135,7 +139,7 @@ impl Player for MinimaxBot {
             println!("\x1b[2K\rThe bot has no valid moves. It passes.");
         }
 
-        print!("Press enter to continue...");
+        print!("Press <Enter> to continue ");
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut String::new()).unwrap();
 

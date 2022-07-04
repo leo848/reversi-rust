@@ -49,4 +49,14 @@ mod tests {
             vec![Field(2, 4), Field(3, 5), Field(4, 2), Field(5, 3)]
         );
     }
+
+    #[test]
+    fn board_status() {
+        use crate::reversi::Color::{Black, White};
+        let mut board = Board::new();
+        board[Field(2, 4)] = Some(White);
+        board[Field(3, 5)] = Some(Black);
+
+        assert_eq!(board.status(), GameStatus::InProgress);
+    }
 }
