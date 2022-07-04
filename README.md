@@ -2,6 +2,10 @@
 
 The game [reversi](https://en.wikipedia.org/wiki/Reversi), build in Rust.
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leo848/reversi-rust/Rust)
+![Lines of code](https://img.shields.io/tokei/lines/github/leo848/reversi-rust)
+
+
 ## Installation
 
 ### Build from source
