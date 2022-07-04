@@ -236,4 +236,8 @@ impl Player for MinimaxBot {
 
         best_move.0
     }
+
+    fn redraw_options(&self) -> DisplayOptions {
+        Default::default()
+    }
 }

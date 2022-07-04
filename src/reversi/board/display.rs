@@ -34,7 +34,7 @@ pub fn redraw_board(board: &Board, options: &DisplayOptions) {
 
     if let Some(title) = &options.title {
         println!(
-            "{}",
+            "{}\n",
             if options.bold_title {
                 title.bold()
             } else {
@@ -49,9 +49,7 @@ pub fn redraw_board(board: &Board, options: &DisplayOptions) {
         Some(Color::Black) => println!("{:b>}", board),
     }
 
-    for _ in 0..options.empty_lines {
-        println!();
-    }
+    print!("{}", "\n".repeat(options.empty_lines as usize));
 }
 
 pub fn animate_between(board_before: &Board, board_after: &Board, animation_time: Duration, options: DisplayOptions) {

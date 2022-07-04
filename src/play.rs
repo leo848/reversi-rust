@@ -4,6 +4,8 @@ pub use player::*;
 
 use reversi::reversi::*;
 
+use std::time::Duration;
+
 use clap::ArgMatches;
 use colored::Colorize;
 
@@ -31,23 +33,32 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     while board.status() == board::GameStatus::InProgress {
         counter += 1;
 
-        clearscreen::clear().expect("Failed to clear screen");
         let player = match counter % 2 {
             0 => &player_black,
             1 => &player_white,
             _ => unreachable!(),
         };
 
+        redraw_board(&board, &player.redraw_options());
+
         let field = player.turn(&board);
 
-        match field {
-            Some(field) => board
+        
+
+        if let Some(field) = field {
+            let mut anim_board = board.clone();
+            anim_board[field] = Some(player.color());
+
+            board
                 .add_piece(field, player.color())
                 .unwrap_or_else(|err| {
                     panic!("Failed to add piece `{}`: {}", field.to_string(), err);
-                }),
-            None => continue,
-        };
+                });
+
+            animate_between(&anim_board, &board, Duration::from_secs(1), Default::default());
+        } else {
+            continue;
+        }
     }
 
     clearscreen::clear().expect("Failed to clear screen");

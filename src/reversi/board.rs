@@ -2,6 +2,7 @@ pub mod display;
 
 pub use display::{
     redraw_board,
+    animate_between,
     DisplayOptions,
 };
 

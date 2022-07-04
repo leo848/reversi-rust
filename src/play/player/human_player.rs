@@ -62,4 +62,11 @@ impl Player for HumanPlayer {
 
         Some(field)
     }
+
+    fn redraw_options(&self) -> DisplayOptions {
+        DisplayOptions {
+            color: Some(self.color),
+            ..Default::default()
+        }
+    }
 }

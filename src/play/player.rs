@@ -10,4 +10,5 @@ pub trait Player {
     fn turn(&self, board: &Board) -> Option<Field>;
     fn color(&self) -> Color;
     fn name(&self) -> String;
+    fn redraw_options(&self) -> DisplayOptions;
 }
