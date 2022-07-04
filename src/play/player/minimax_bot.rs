@@ -212,7 +212,7 @@ impl Player for MinimaxBot {
     /// Make a move using the minimax algorithm interactively.
     /// The interactive part of this includes displaying a spinner while the bot is thinking.
     fn turn(&self, board: &Board) -> Option<Field> {
-        redraw_board(&board, Default::default());
+        redraw_board(board, Default::default());
 
         println!("{} {}\n", self.color(), self.name().bold());
 
