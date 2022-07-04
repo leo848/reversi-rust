@@ -1,6 +1,9 @@
 pub mod display;
 
-pub use display::*;
+pub use display::{
+    redraw_board,
+    DisplayOptions,
+};
 
 use crate::reversi::*;
 
