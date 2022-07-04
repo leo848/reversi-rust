@@ -4,7 +4,7 @@ use clap::{value_parser, Arg, Command, ValueSource};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")
-        .version("0.1.0")
+        .version("0.2.0")
         .author("Leo Blume <leoblume@gmx.de>")
         .about("Play the Reversi game against another player or the computer.")
         .arg(
