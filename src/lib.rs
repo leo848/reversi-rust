@@ -27,7 +27,7 @@ mod tests {
     #[test]
     fn display_board() {
         let board = Board::new();
-        redraw_board(&board, Default::default());
+        redraw_board(&board, &Default::default());
     }
 
     #[test]
@@ -35,7 +35,7 @@ mod tests {
         let mut board = Board::new();
         board[Field(2, 4)] = Some(Color::White);
 
-        redraw_board(&board, Default::default());
+        redraw_board(&board, &Default::default());
 
         let valid = board.move_validity(Field(3, 5), Color::White);
         assert!(valid.unwrap().contains(&Field(3, 4)));
