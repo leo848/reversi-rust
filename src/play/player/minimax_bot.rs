@@ -107,9 +107,8 @@ impl MinimaxBot {
 impl Player for MinimaxBot {
     fn name(&self) -> String {
         format!(
-            "Minimax Bot (depth {}, {:?})",
+            "Minimax Bot (depth {})",
             self.depth,
-            MinimaxStrategy::from(self.color())
         )
     }
 
