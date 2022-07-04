@@ -15,7 +15,7 @@ pub enum Opponent {
 pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     let mut board = Board::new();
 
-    redraw_board(&board, Default::default());
+    redraw_board(&board, &Default::default());
 
     let player_white: Box<dyn Player> =
         Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
@@ -54,7 +54,7 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
 
     board.sort();
 
-    redraw_board(&board, DisplayOptions {
+    redraw_board(&board, &DisplayOptions {
         empty_lines: 2,
         title: Some("Final results".into()),
         ..Default::default()
