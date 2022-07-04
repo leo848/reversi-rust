@@ -23,7 +23,7 @@ impl MinimaxStrategy {
         }
     }
 
-    fn value(&self) -> i32 {
+    fn worst_value(&self) -> i32 {
         match self {
             MinimaxStrategy::Minimize => i32::MAX,
             MinimaxStrategy::Maximize => i32::MIN,
@@ -78,7 +78,7 @@ impl MinimaxBot {
             return (None, self.eval(board));
         }
 
-        let mut best_choice = (None, strategy.value());
+        let mut best_choice = (None, strategy.worst_value());
 
         for field in board.valid_moves(strategy.into()) {
             let mut board = board.clone();
@@ -88,12 +88,12 @@ impl MinimaxBot {
 
             match strategy {
                 MinimaxStrategy::Minimize => {
-                    if evaluation < best_choice.1 {
+                    if evaluation <= best_choice.1 {
                         best_choice = (Some(field), evaluation);
                     }
                 }
                 MinimaxStrategy::Maximize => {
-                    if evaluation > best_choice.1 {
+                    if evaluation >= best_choice.1 {
                         best_choice = (Some(field), evaluation);
                     }
                 }
