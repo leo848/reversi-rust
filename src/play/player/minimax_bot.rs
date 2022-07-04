@@ -9,13 +9,27 @@ use std::{
 use colored::Colorize;
 use spinners::{Spinner, Spinners};
 
+/// A strategy for the minimax bot.
 #[derive(Debug, Clone, Copy)]
-enum MinimaxStrategy {
+pub enum MinimaxStrategy {
+    /// Minimize the board evaluation.
     Minimize,
+    /// Maximize the board evaluation.
     Maximize,
 }
 
 impl MinimaxStrategy {
+    /// Get the opposite of this strategy.
+    ///
+    /// # Examples
+    /// ```
+    /// use reversi::player::minimax_bot::MinimaxStrategy;
+    /// let min = MinimaxStrategy::Minimize;
+    /// let max = MinimaxStrategy::Maximize;
+    ///
+    /// assert_eq!(min.opposite(), max);
+    /// assert_eq!(max.opposite(), min);
+    /// ```
     fn other(&self) -> MinimaxStrategy {
         match self {
             MinimaxStrategy::Minimize => MinimaxStrategy::Maximize,
@@ -23,6 +37,18 @@ impl MinimaxStrategy {
         }
     }
 
+    /// Get the most suboptimal evaluation for this strategy.
+    ///
+    /// # Examples
+    /// ```
+    /// use reversi::player::minimax_bot::MinimaxStrategy;
+    ///
+    /// let min = MinimaxStrategy::Minimize;
+    /// let max = MinimaxStrategy::Maximize;
+    ///
+    /// assert_eq!(min.worst_value()), i32::MAX);
+    /// assert_eq!(max.worst_value()), i32::MIN);
+    /// ```
     fn worst_value(&self) -> i32 {
         match self {
             MinimaxStrategy::Minimize => i32::MAX,
@@ -31,6 +57,7 @@ impl MinimaxStrategy {
     }
 }
 
+/// A color can be turned into a `MinimaxStrategy`.
 impl From<Color> for MinimaxStrategy {
     fn from(color: Color) -> Self {
         match color {
@@ -49,17 +76,42 @@ impl From<MinimaxStrategy> for Color {
     }
 }
 
+/// A `MinimaxBot` is a player that plays using the minimax algorithm.
 pub struct MinimaxBot {
     color: Color,
     depth: u8,
 }
 
 impl MinimaxBot {
+    /// Create a new `MinimaxBot` with the given color and depth.
     pub fn new(color: Color, depth: u8) -> Self {
         MinimaxBot { color, depth }
     }
 
-    fn eval(&self, board: &Board) -> i32 {
+    /// Evaluate a given board.
+    /// This is the evaluation function used by the minimax algorithm.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::player::minimax_bot::MinimaxBot;
+    /// # use reversi::reversi::*;
+    /// # use std::str::FromStr;
+    ///
+    /// let mut board = Board::new();
+    /// let bot = MinimaxBot::new(Color::White, 1);
+    ///
+    /// assert_eq!(bot.eval(&board), 0);
+    ///
+    /// board.add_piece(Field::from_str("d3").unwrap(), Color::White);
+    /// assert_eq!(bot.eval(&board), +3);
+    ///
+    /// board.add_piece(Field::from_str("e3").unwrap(), Color::Black);
+    /// assert_eq!(bot.eval(&board), 0);
+    ///
+    /// board.add_piece(Field::from_str("f5").unwrap(), Color::White);
+    /// assert_eq!(bot.eval(&board), +5);
+    /// ```
+    pub fn eval(&self, board: &Board) -> i32 {
         match board.status() {
             GameStatus::Win(color) => match color {
                 Color::White => i32::MAX,
@@ -73,7 +125,51 @@ impl MinimaxBot {
         }
     }
 
-    fn minimax(&self, board: &Board, depth: u8, strategy: MinimaxStrategy) -> (Option<Field>, i32) {
+    /// Find the best move using the minimax algorithm.
+    /// This is the function used by the `MinimaxBot` to find the best move.
+    ///
+    /// # Arguments
+    /// * `board` - The board to evaluate.
+    /// * `depth` - The depth of the search. This is the number of moves to look ahead.
+    /// * `strategy` - The strategy to use.
+    ///
+    /// # Examples
+    /// ```
+    /// # use reversi::player::minimax_bot::MinimaxBot;
+    /// # use reversi::reversi::*;
+    ///
+    /// let mut board = Board::new();
+    /// let bot = MinimaxBot::new(Color::White, 1);
+    ///
+    /// assert!(board.valid_moves().contains(bot.minimax(&board, 2, MinimaxStrategy::Maximize)));
+    /// ```
+    ///
+    /// ```
+    /// # use reversi::player::minimax_bot::MinimaxBot;
+    /// # use reversi::reversi::*;
+    ///
+    /// let mut board = Board::new();
+    /// let bot1 = MinimaxBot::new(Color::White, 1);
+    /// let bot2 = MinimaxBot::new(Color::Black, 3);
+    ///
+    /// let mut counter = 0;
+    /// while board.status() == GameStatus::InProgress {
+    ///    counter += 1;
+    ///    if (counter % 2) == 0 {
+    ///    board.add_piece(bot1.minimax(&board, 1, MinimaxStrategy::Maximize), Color::White);
+    ///    } else {
+    ///    board.add_piece(bot2.minimax(&board, 3, MinimaxStrategy::Minimize), Color::Black);
+    ///    }
+    /// }
+    ///
+    /// assert_eq!(board.status(), GameStatus::Win(Color::Black));
+    /// ```
+    pub fn minimax(
+        &self,
+        board: &Board,
+        depth: u8,
+        strategy: MinimaxStrategy,
+    ) -> (Option<Field>, i32) {
         if depth == 0 || board.status() != GameStatus::InProgress {
             return (None, self.eval(board));
         }
@@ -113,6 +209,8 @@ impl Player for MinimaxBot {
         self.color
     }
 
+    /// Make a move using the minimax algorithm interactively.
+    /// The interactive part of this includes displaying a spinner while the bot is thinking.
     fn turn(&self, board: &Board) -> Option<Field> {
         println!("{}", board);
 
