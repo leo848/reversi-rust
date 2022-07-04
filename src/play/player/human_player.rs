@@ -26,10 +26,13 @@ impl Player for HumanPlayer {
     }
 
     fn turn(&self, board: &Board) -> Option<Field> {
-        redraw_board(board, &DisplayOptions {
-            color: Some(self.color),
-            ..Default::default()
-        });
+        redraw_board(
+            board,
+            &DisplayOptions {
+                color: Some(self.color),
+                ..Default::default()
+            },
+        );
 
         println!("{} {}", self.color(), self.name.bold());
 

@@ -1,10 +1,6 @@
 pub mod display;
 
-pub use display::{
-    redraw_board,
-    animate_between,
-    DisplayOptions,
-};
+pub use display::{animate_between, animate_by, redraw_board, DisplayOptions};
 
 use crate::reversi::*;
 
@@ -319,7 +315,7 @@ impl Board {
     ///
     /// # Returns
     /// see `move_validity`
-    pub fn add_piece(&mut self, field: Field, color: Color) -> Result<usize, PlaceError> {
+    pub fn add_piece(&mut self, field: Field, color: Color) -> Result<Vec<Field>, PlaceError> {
         let captured_pieces = self.move_validity(field, color)?;
 
         self.add_piece_unchecked(field, color);
@@ -328,7 +324,7 @@ impl Board {
             self.flip(captured_piece);
         }
 
-        Ok(captured_pieces.len())
+        Ok(captured_pieces)
     }
 
     /// Set a field to a color.

@@ -43,33 +43,42 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
 
         let field = player.turn(&board);
 
-        
-
         if let Some(field) = field {
             let mut anim_board = board.clone();
             anim_board[field] = Some(player.color());
 
-            board
+            let mut captures = board
                 .add_piece(field, player.color())
                 .unwrap_or_else(|err| {
                     panic!("Failed to add piece `{}`: {}", field.to_string(), err);
                 });
 
-            animate_between(&anim_board, &board, Duration::from_secs(1), Default::default());
+            captures.sort_by_key(|capture| {
+                usize::wrapping_sub(field.0, capture.0).wrapping_pow(2)
+                    + usize::wrapping_sub(field.1, capture.1).wrapping_pow(2)
+            });
+
+            animate_by(
+                &anim_board,
+                &captures,
+                Duration::from_millis(300),
+                Default::default(),
+            );
         } else {
             continue;
         }
     }
 
-    clearscreen::clear().expect("Failed to clear screen");
-
     board.sort();
 
-    redraw_board(&board, &DisplayOptions {
-        empty_lines: 2,
-        title: Some("Final results".into()),
-        ..Default::default()
-    });
+    redraw_board(
+        &board,
+        &DisplayOptions {
+            empty_lines: 2,
+            title: Some("Final results".into()),
+            ..Default::default()
+        },
+    );
 
     println!(
         "\n{}: {} pieces",
