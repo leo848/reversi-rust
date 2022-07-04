@@ -1,0 +1,2 @@
+- name: Rust Cache
+  uses: Swatinem/rust-cache@v1.4.0
