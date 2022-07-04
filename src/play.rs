@@ -16,6 +16,18 @@ pub enum Opponent {
 
 pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     let mut board = Board::new();
+    let animation_speed: Duration = match matches.value_of("animation-speed") {
+        Some("slow") => Duration::from_millis(800),
+        Some("medium") => {
+            if matches.is_present("no-animation") {
+                Duration::ZERO
+            } else {
+                Duration::from_millis(300)
+            }
+        }
+        Some("fast") => Duration::from_millis(100),
+        _ => unreachable!(),
+    };
 
     redraw_board(&board, &Default::default());
 
@@ -58,12 +70,7 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
                     + usize::wrapping_sub(field.1, capture.1).wrapping_pow(2)
             });
 
-            animate_by(
-                &anim_board,
-                &captures,
-                Duration::from_millis(300),
-                Default::default(),
-            );
+            animate_by(&anim_board, &captures, animation_speed, Default::default());
         } else {
             continue;
         }
