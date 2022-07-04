@@ -62,10 +62,9 @@ impl MinimaxBot {
     fn eval(&self, board: &Board) -> i32 {
         match board.status() {
             GameStatus::Win(color) => {
-                if color == self.color {
-                    i32::MAX
-                } else {
-                    i32::MIN
+                match color {
+                    Color::White => i32::MAX,
+                    Color::Black => i32::MIN,
                 }
             }
             GameStatus::Draw => 0,
