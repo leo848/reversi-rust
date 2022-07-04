@@ -41,6 +41,6 @@ fn main() {
     {
         play::run(&play::Opponent::Bot, &matches);
     } else {
-        eprintln!("Please specify either player or bot.");
+        eprintln!("Please specify either --player or --bot");
     }
 }
