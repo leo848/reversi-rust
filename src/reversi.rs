@@ -4,7 +4,7 @@ pub use board::*;
 
 use std::fmt;
 
-#[derive(Debug, Eq, PartialEq, Clone, Copy, PartialOrd, Ord)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy, PartialOrd, Ord, Hash)]
 pub enum Color {
     Black,
     White,

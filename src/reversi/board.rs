@@ -144,7 +144,7 @@ pub enum GameStatus {
     Draw,
 }
 
-#[derive(Debug, Eq, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Clone, Hash)]
 pub struct Board(pub [[Option<Color>; 8]; 8]);
 
 impl Board {
