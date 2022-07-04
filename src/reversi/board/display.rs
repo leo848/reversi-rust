@@ -3,7 +3,6 @@ use crate::reversi::*;
 use colored::Colorize;
 
 #[derive(Debug)]
-#[non_exhaustive]
 pub struct DisplayOptions {
     pub clear_screen: bool,
     pub color: Option<Color>,
@@ -20,7 +19,7 @@ impl Default for DisplayOptions {
             clear_screen: true,
             color: None,
             title: None,
-            bold_title: false,
+            bold_title: true,
             empty_lines: 1,
         }
     }

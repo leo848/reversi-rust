@@ -15,7 +15,7 @@ pub enum Opponent {
 pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     let mut board = Board::new();
 
-    println!("{}", board);
+    redraw_board(&board, Default::default());
 
     let player_white: Box<dyn Player> =
         Box::new(HumanPlayer::new(Color::White, "Player 1".to_string()));
@@ -53,9 +53,12 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     clearscreen::clear().expect("Failed to clear screen");
 
     board.sort();
-    println!("{}\n\n", board);
 
-    println!("{}", "Final results".bold());
+    redraw_board(&board, DisplayOptions {
+        empty_lines: 2,
+        title: Some("Final results".into()),
+        ..Default::default()
+    });
 
     println!(
         "\n{}: {} pieces",

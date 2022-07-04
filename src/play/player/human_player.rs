@@ -26,10 +26,10 @@ impl Player for HumanPlayer {
     }
 
     fn turn(&self, board: &Board) -> Option<Field> {
-        match self.color {
-            Color::White => println!("{:w>}", board),
-            Color::Black => println!("{:b>}", board),
-        }
+        redraw_board(board, DisplayOptions {
+            color: Some(self.color),
+            ..Default::default()
+        });
 
         println!("{} {}", self.color(), self.name.bold());
 
