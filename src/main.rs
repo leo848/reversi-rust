@@ -1,6 +1,6 @@
 pub mod play;
 
-use clap::{value_parser, Arg, Command};
+use clap::{value_parser, Arg, Command, ValueSource};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")
@@ -36,7 +36,9 @@ fn main() {
     let matches = cli().get_matches();
     if matches.is_present("player") {
         play::run(&play::Opponent::Human, &matches);
-    } else if matches.is_present("bot") || matches.is_present("depth") {
+    } else if matches.is_present("bot")
+        || matches.value_source("depth").unwrap() != ValueSource::DefaultValue
+    {
         play::run(&play::Opponent::Bot, &matches);
     } else {
         eprintln!("Please specify either player or bot.");

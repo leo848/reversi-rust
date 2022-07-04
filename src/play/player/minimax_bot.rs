@@ -106,10 +106,7 @@ impl MinimaxBot {
 
 impl Player for MinimaxBot {
     fn name(&self) -> String {
-        format!(
-            "Minimax Bot (depth {})",
-            self.depth,
-        )
+        format!("Minimax Bot (depth {})", self.depth,)
     }
 
     fn color(&self) -> Color {
