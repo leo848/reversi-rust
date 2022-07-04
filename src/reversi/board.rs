@@ -1,3 +1,7 @@
+pub mod display;
+
+pub use display::*;
+
 use crate::reversi::*;
 
 use std::{
