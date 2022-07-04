@@ -28,7 +28,7 @@ fn cli() -> Command<'static> {
                 .long("depth")
                 .takes_value(true)
                 .default_value("3")
-                .value_parser(value_parser!(u8).range(0..=8)),
+                .value_parser(value_parser!(u8).range(1..=8)),
         )
 }
 
