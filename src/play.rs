@@ -88,7 +88,7 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
     );
 
     println!(
-        "\n{}: {} pieces",
+        "{}: {} pieces",
         player_white.color(),
         board.count_pieces(Color::White)
     );
