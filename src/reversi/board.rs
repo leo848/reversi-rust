@@ -2,10 +2,10 @@ pub mod display;
 
 pub use display::{animate_between, animate_by, animate_results, redraw_board, DisplayOptions};
 
-use crate::reversi::*;
+use crate::reversi::Color;
 
 use std::{
-    cmp::Ordering::*,
+    cmp::Ordering::{Equal, Greater, Less},
     error::Error,
     fmt,
     ops::{Deref, DerefMut, Index, IndexMut, Not},

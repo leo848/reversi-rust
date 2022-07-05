@@ -70,7 +70,7 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
                     + usize::wrapping_sub(field.1, capture.1).wrapping_pow(2)
             });
 
-            animate_by(&anim_board, &captures, animation_speed, Default::default());
+            animate_by(&anim_board, &captures, animation_speed, &Default::default());
         } else {
             continue;
         }
