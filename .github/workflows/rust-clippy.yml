@@ -40,6 +40,8 @@ jobs:
       - name: Install required cargo
         run: cargo install clippy-sarif sarif-fmt
 
+      - uses: Swatinem/rust-cache@v1
+
       - name: Run rust-clippy
         run:
           cargo clippy
