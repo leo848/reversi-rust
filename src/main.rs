@@ -1,10 +1,10 @@
 pub mod play;
 
-use clap::{builder::PossibleValuesParser, value_parser, Arg, Command, ValueSource};
+use clap::{builder::PossibleValuesParser, value_parser, crate_version, Arg, Command, ValueSource};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")
-        .version("0.3.3")
+        .version(crate_version!())
         .author("Leo Blume <leoblume@gmx.de>")
         .about("Play the Reversi game against another player or the computer.")
         .arg(
