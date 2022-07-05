@@ -3,6 +3,8 @@ use crate::reversi::*;
 use std::time::Duration;
 
 use colored::Colorize;
+use itertools::Itertools;
+use split_iter::Splittable;
 
 #[derive(Debug)]
 pub struct DisplayOptions {
@@ -108,4 +110,35 @@ fn animation_frames(board_before: &Board, board_after: &Board) -> Vec<Board> {
     }
 
     boards_between
+}
+
+pub fn animate_results(mut board: Board, time_per_flip: Duration, options: &DisplayOptions) {
+    use std::thread::sleep;
+
+    board.sort();
+
+    let mut fields = Field::all().map(|field| board[field]).collect::<Vec<_>>();
+    fields.sort_by_key(|piece| match piece {
+        Some(Color::White) => 0,
+        None => 1,
+        Some(Color::Black) => 2,
+    });
+    let (white_fields, black_fields) = fields
+        .into_iter()
+        .enumerate()
+        .map(|(i, piece)| (Field(i % 8, i / 8), piece))
+        .filter(|(_, c)| c.is_some())
+        .split(|(_, c)| c == &Some(Color::Black));
+
+    let display_fields =
+        white_fields.interleave(black_fields.collect::<Vec<_>>().into_iter().rev());
+
+    let mut anim_board = Board::empty();
+
+    for (index, color) in display_fields {
+        sleep(time_per_flip / 2);
+        anim_board[index] = color;
+        redraw_board(&anim_board, options);
+        sleep(time_per_flip / 2);
+    }
 }

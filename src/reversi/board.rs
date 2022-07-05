@@ -1,6 +1,6 @@
 pub mod display;
 
-pub use display::{animate_between, animate_by, redraw_board, DisplayOptions};
+pub use display::{animate_between, animate_by, animate_results, redraw_board, DisplayOptions};
 
 use crate::reversi::*;
 

@@ -76,16 +76,18 @@ pub fn run(opponent: &Opponent, matches: &ArgMatches) {
         }
     }
 
-    board.sort();
+    // board.sort();
 
-    redraw_board(
-        &board,
-        &DisplayOptions {
-            empty_lines: 2,
-            title: Some("Final results".into()),
-            ..Default::default()
-        },
-    );
+    // redraw_board(
+    //     &board,
+    //     &DisplayOptions {
+    //         empty_lines: 2,
+    //         title: Some("Final results".into()),
+    //         ..Default::default()
+    //     },
+    // );
+
+    animate_results(board.clone(), animation_speed, &Default::default());
 
     println!(
         "{}: {} pieces",
