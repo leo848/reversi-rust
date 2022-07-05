@@ -1,6 +1,6 @@
 pub mod play;
 
-use clap::{builder::PossibleValuesParser, value_parser, crate_version, Arg, Command, ValueSource};
+use clap::{builder::PossibleValuesParser, crate_version, value_parser, Arg, Command, ValueSource};
 
 fn cli() -> Command<'static> {
     Command::new("reversi")

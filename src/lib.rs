@@ -1,10 +1,7 @@
 #![warn(clippy::pedantic)]
-
 #![allow(clippy::must_use_candidate)]
-
 #![allow(clippy::missing_errors_doc)]
 #![allow(clippy::missing_panics_doc)]
-
 #![allow(clippy::cast_possible_wrap)]
 #![allow(clippy::cast_possible_truncation)]
 
