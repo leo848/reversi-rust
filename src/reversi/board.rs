@@ -22,7 +22,7 @@ impl Field {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::Field;
+    /// # use reversi_game::Field;
     /// assert!(Field(0, 3).in_bounds());
     /// assert!(Field(7, 5).in_bounds());
     /// assert!(!Field(3, 8).in_bounds());
@@ -35,7 +35,7 @@ impl Field {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::Field;
+    /// # use reversi_game::Field;
     /// let possible_fields = Field::all();
     /// assert_eq!(possible_fields.count(), 64);
     /// ```
@@ -91,7 +91,7 @@ impl FromStr for Field {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::Field;
+    /// # use reversi_game::Field;
     /// # use std::str::FromStr;
     /// let field = Field::from_str("a8").unwrap();
     /// assert_eq!(field, Field(0, 0));
@@ -184,7 +184,7 @@ impl Board {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::{Board, Field, Color};
+    /// # use reversi_game::{Board, Field, Color};
     /// let mut board = Board::new();
     ///
     /// assert_eq!(board.count_pieces(Color::Black), 2);
@@ -201,7 +201,7 @@ impl Board {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::{Board, Field, Color};
+    /// # use reversi_game::{Board, Field, Color};
     /// let mut board = Board::new();
     /// assert_eq!(board.turn(), Color::White);
     /// board.add_piece(Field(2, 4), Color::White);
@@ -231,7 +231,7 @@ impl Board {
     ///
     /// # Examples
     /// ```
-    /// # use reversi::{Board, Field, Color, GameStatus};
+    /// # use reversi_game::{Board, Field, Color, GameStatus};
     /// let mut board = Board::new();
     /// assert_eq!(board.status(), GameStatus::InProgress);
     /// ```
