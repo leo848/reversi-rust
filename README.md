@@ -9,6 +9,12 @@ The game [reversi](https://en.wikipedia.org/wiki/Reversi), build in Rust.
 
 ## Installation
 
+### Cargo install
+
+```sh
+cargo install reversi-game
+```
+
 ### Build from source
 
 ```sh
