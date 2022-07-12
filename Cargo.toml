@@ -4,7 +4,7 @@ description = "A rust implementation of the Reversi game. Reversi is a board gam
 version = "0.3.3"
 edition = "2021"
 license = "GPL-3.0-or-later"
-keywords = ["reversi", "board game", "game"]
+keywords = ["reversi", "board-game", "game"]
 categories = ["games", "command-line-utilities", "simulation"]
 repository = "https://github.com/leo848/reversi"
 
