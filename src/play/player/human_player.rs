@@ -1,5 +1,5 @@
 use super::Player;
-use reversi::reversi::*;
+use reversi_game::reversi::*;
 
 use std::io::{self, Write};
 

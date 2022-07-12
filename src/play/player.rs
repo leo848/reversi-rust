@@ -4,7 +4,7 @@ pub mod minimax_bot;
 pub use human_player::HumanPlayer;
 pub use minimax_bot::MinimaxBot;
 
-use reversi::reversi::*;
+use reversi_game::reversi::*;
 
 pub trait Player {
     fn turn(&self, board: &Board) -> Option<Field>;

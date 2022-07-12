@@ -2,7 +2,7 @@ pub mod player;
 
 pub use player::*;
 
-use reversi::reversi::*;
+use reversi_game::reversi::*;
 
 use std::time::Duration;
 

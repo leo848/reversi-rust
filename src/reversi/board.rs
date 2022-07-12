@@ -1,3 +1,5 @@
+#![allow(clippy::module_name_repetitions)]
+
 pub mod display;
 
 pub use display::{animate_between, animate_by, animate_results, redraw_board, DisplayOptions};

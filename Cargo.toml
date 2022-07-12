@@ -1,5 +1,5 @@
 [package]
-name = "reversi"
+name = "reversi-game"
 description = "A rust implementation of the Reversi game. Reversi is a board game for two players, who take turns dropping pieces of a given color on a game board. "
 version = "0.3.3"
 edition = "2021"
@@ -7,6 +7,10 @@ license = "GPL-3.0-or-later"
 keywords = ["reversi", "board-game", "game"]
 categories = ["games", "command-line-utilities", "simulation"]
 repository = "https://github.com/leo848/reversi"
+
+[[bin]]
+path = "src/main.rs"
+name = "reversi"
 
 [dependencies]
 rand = "0.8.4"
