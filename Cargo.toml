@@ -15,7 +15,7 @@ name = "reversi"
 [dependencies]
 rand = "0.8.4"
 clap = { version = "4.0.4", features = ["cargo"] }
-clearscreen = "1.0.10"
+clearscreen = "2.0.0"
 colored = "2.0.0"
 itertools = "0.10.3"
 spinners = "4.1.0"
